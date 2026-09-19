@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import dynamic from "next/dynamic";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -18,6 +19,23 @@ import {
   ChevronRight,
   Database,
 } from "lucide-react";
+
+// Dynamic lazy load of 3D Digital Laboratory Pipeline
+const AIPipeline3D = dynamic(
+  () => import("@/components/3d/ai-pipeline-3d"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-[200px] sm:h-[240px] rounded-2xl border border-white/[0.08] bg-[#090b0e] flex items-center justify-center mb-6">
+        <div className="flex flex-col items-center space-y-2">
+          <div className="h-8 w-8 rounded-full border border-[#00f5a0]/40 border-t-[#00f5a0] animate-spin" />
+          <span className="text-xs font-mono text-[#8e94a0]">Calibrating 3D Laboratory Pipeline...</span>
+        </div>
+      </div>
+    ),
+  }
+);
+
 
 // Preset responses for realistic streaming simulation
 const STREAMING_PRESETS = [
@@ -222,7 +240,7 @@ export function AIPlayground() {
     <section id="playground" className="py-24 relative bg-[#08090a] border-t border-white/[0.06]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="flex flex-col items-center text-center mb-14">
+        <div className="flex flex-col items-center text-center mb-10">
           <Badge variant="accent" className="mb-3">
             Interactive Experiments
           </Badge>
@@ -233,6 +251,9 @@ export function AIPlayground() {
             Live client-side simulations demonstrating how I engineer streaming token pipelines, RAG retrieval diagnostics, and autonomous agent state machines.
           </p>
         </div>
+
+        {/* 3D Digital Laboratory Pipeline Visualizer */}
+        <AIPipeline3D isStreaming={isStreaming || isAgentRunning} />
 
         {/* Playground Tabs */}
         <Tabs defaultValue="streaming" className="w-full">

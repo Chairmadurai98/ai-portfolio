@@ -2,9 +2,24 @@
 
 import * as React from "react";
 import Link from "next/link";
+import dynamic from "next/dynamic";
 import { ArrowRight, Terminal, Cpu, Database, Layout, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { PipelineNode } from "@/types";
+
+// Dynamic lazy-load 3D scene with SSR disabled
+const HeroCore = dynamic(() => import("@/components/3d/hero-core"), {
+  ssr: false,
+  loading: () => (
+    <div className="w-full h-[460px] sm:h-[520px] max-w-2xl mx-auto flex items-center justify-center">
+      <div className="flex flex-col items-center space-y-3">
+        <div className="h-12 w-12 rounded-full border border-[#00f5a0]/40 border-t-[#00f5a0] animate-spin" />
+        <span className="text-xs font-mono text-[#8e94a0]">Initializing 3D Interface...</span>
+      </div>
+    </div>
+  ),
+});
+
 
 const PIPELINE_NODES: PipelineNode[] = [
   { id: "user", name: "User", sub: "Input & Intent", icon: Terminal, metric: "0ms" },
@@ -16,71 +31,16 @@ const PIPELINE_NODES: PipelineNode[] = [
 
 export function Hero() {
   const [activeNode, setActiveNode] = React.useState<string>("ai");
-  const heroRef = React.useRef<HTMLElement>(null);
-  const glowRef = React.useRef<HTMLDivElement>(null);
-  const tiltRef = React.useRef<HTMLDivElement>(null);
-
-  React.useEffect(() => {
-    // Check prefers-reduced-motion
-    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (mediaQuery.matches) return;
-
-    let rafId: number | null = null;
-
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!heroRef.current) return;
-
-      if (rafId !== null) cancelAnimationFrame(rafId);
-
-      rafId = requestAnimationFrame(() => {
-        if (!heroRef.current) return;
-        const rect = heroRef.current.getBoundingClientRect();
-        // Relative mouse position within hero (-0.5 to 0.5)
-        const x = (e.clientX - rect.left) / rect.width - 0.5;
-        const y = (e.clientY - rect.top) / rect.height - 0.5;
-
-        // Performant direct DOM styling without triggering React reconciliation
-        if (glowRef.current) {
-          glowRef.current.style.transform = `translate(${x * 40}px, ${y * 40}px)`;
-        }
-        if (tiltRef.current) {
-          tiltRef.current.style.transform = `perspective(1000px) rotateX(${y * -6}deg) rotateY(${x * 6}deg)`;
-        }
-      });
-    };
-
-    const target = heroRef.current;
-    if (target) {
-      target.addEventListener("mousemove", handleMouseMove, { passive: true });
-    }
-    return () => {
-      if (rafId !== null) cancelAnimationFrame(rafId);
-      if (target) {
-        target.removeEventListener("mousemove", handleMouseMove);
-      }
-    };
-  }, []);
-
   const activeNodeData = PIPELINE_NODES.find((n) => n.id === activeNode) ?? PIPELINE_NODES[2];
 
   return (
     <section
       id="hero"
-      ref={heroRef}
-      className="relative min-h-[92vh] pt-32 pb-20 flex flex-col justify-center items-center overflow-hidden bg-grid-subtle"
+      className="relative min-h-[95vh] pt-28 pb-20 flex flex-col justify-center items-center overflow-hidden bg-grid-subtle"
     >
-      {/* Subtle cursor-following background glow (GPU accelerated, zero React re-renders) */}
-      <div
-        ref={glowRef}
-        className="pointer-events-none absolute -inset-px opacity-40 transition-transform duration-500 ease-out will-change-transform"
-      >
-        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[520px] h-[520px] bg-[#00f5a0]/[0.07] rounded-full blur-[120px]" />
-        <div className="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-[#0df2c8]/[0.05] rounded-full blur-[100px]" />
-      </div>
-
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
         {/* Availability Badge */}
-        <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full border border-white/[0.1] bg-[#0f1216]/80 backdrop-blur-md mb-8 animate-in fade-in slide-in-from-bottom-3 duration-500">
+        <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full border border-white/[0.1] bg-[#0f1216]/80 backdrop-blur-md mb-6 animate-in fade-in slide-in-from-bottom-3 duration-500">
           <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00f5a0] opacity-75" />
             <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00f5a0]" />
@@ -91,7 +51,7 @@ export function Hero() {
         </div>
 
         {/* Dual Roles Badge */}
-        <div className="flex items-center justify-center space-x-3 mb-6">
+        <div className="flex items-center justify-center space-x-3 mb-5">
           <span className="text-xs sm:text-sm font-mono tracking-widest uppercase text-[#00f5a0] bg-[#00f5a0]/10 border border-[#00f5a0]/30 px-3 py-1 rounded-md">
             AI Engineer
           </span>
@@ -102,17 +62,17 @@ export function Hero() {
         </div>
 
         {/* Main Headline */}
-        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white max-w-4xl leading-[1.1] mb-6">
+        <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-white max-w-4xl leading-[1.1] mb-5">
           I build <span className="text-gradient">intelligent interfaces</span> for the web.
         </h1>
 
         {/* Supporting Narrative */}
-        <p className="text-base sm:text-lg lg:text-xl text-[#8e94a0] max-w-2xl leading-relaxed mb-10">
+        <p className="text-base sm:text-lg lg:text-xl text-[#8e94a0] max-w-2xl leading-relaxed mb-8">
           AI Engineer with 7 months of experience building AI-powered applications, backed by 3 years of frontend engineering experience.
         </p>
 
         {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto mb-16">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto mb-10 z-20">
           <Button
             asChild
             size="lg"
@@ -120,7 +80,7 @@ export function Hero() {
             className="w-full sm:w-auto group text-sm font-semibold h-12 px-7"
           >
             <Link href="#work">
-              View My Work
+              Explore My Work
               <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
             </Link>
           </Button>
@@ -137,12 +97,14 @@ export function Hero() {
           </Button>
         </div>
 
-        {/* Interactive Visual: User → Interface → AI → Data → Result */}
-        <div className="w-full max-w-3xl">
-          <div className="relative p-5 sm:p-6 rounded-2xl border border-white/[0.08] bg-[#0c0e11]/85 backdrop-blur-xl shadow-2xl overflow-hidden">
-            {/* Subtle top border highlight */}
-            <div className="absolute top-0 left-1/4 right-1/4 h-[1px] bg-gradient-to-r from-transparent via-[#00f5a0]/40 to-transparent" />
+        {/* 3D Interactive AI Interface Core Scene */}
+        <div className="w-full max-w-3xl my-2">
+          <HeroCore />
+        </div>
 
+        {/* System Pipeline Architecture Telemetry Bar */}
+        <div className="w-full max-w-3xl mt-4">
+          <div className="relative p-5 sm:p-6 rounded-2xl border border-white/[0.08] bg-[#0c0e11]/85 backdrop-blur-xl shadow-2xl overflow-hidden">
             <div className="flex items-center justify-between pb-4 mb-4 border-b border-white/[0.06] text-left">
               <div className="flex items-center space-x-2">
                 <span className="h-2.5 w-2.5 rounded-full bg-[#00f5a0]/80" />
@@ -155,12 +117,11 @@ export function Hero() {
               </span>
             </div>
 
-            {/* Nodes Container with subtle tilt (GPU accelerated direct transform) */}
+            {/* Nodes Container */}
             <div
-              ref={tiltRef}
               role="tablist"
               aria-label="System Pipeline Architecture Stages"
-              className="grid grid-cols-5 gap-2 sm:gap-3 transition-transform duration-300 ease-out will-change-transform"
+              className="grid grid-cols-5 gap-2 sm:gap-3"
             >
               {PIPELINE_NODES.map((node, index) => {
                 const Icon = node.icon;

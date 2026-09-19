@@ -1,4 +1,4 @@
-import type { ElementType } from "react";
+import type { ComponentType } from "react";
 
 export type ProjectCategory = "AI" | "Frontend" | "Experiments";
 
@@ -65,7 +65,7 @@ export interface ProcessStep {
   number: string;
   title: string;
   tagline: string;
-  icon: ElementType;
+  icon: ComponentType<{ className?: string }>;
   goal: string;
   frontendFocus: string;
   aiFocus: string;
@@ -76,7 +76,7 @@ export interface PipelineNode {
   id: string;
   name: string;
   sub: string;
-  icon: ElementType;
+  icon: ComponentType<{ className?: string }>;
   metric: string;
 }
 

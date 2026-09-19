@@ -1,13 +1,31 @@
 "use client";
 
 import * as React from "react";
+import dynamic from "next/dynamic";
 import { Eye, Zap, Layers, Cpu, Box, Sparkles, CheckCircle2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
+// Dynamic lazy load of About 3D Timeline
+const AboutTimeline3D = dynamic(
+  () => import("@/components/3d/about-timeline-3d"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-[220px] rounded-2xl border border-white/[0.08] bg-[#090b0e] flex items-center justify-center mb-12">
+        <div className="flex flex-col items-center space-y-2">
+          <div className="h-8 w-8 rounded-full border border-[#00f5a0]/40 border-t-[#00f5a0] animate-spin" />
+          <span className="text-xs font-mono text-[#8e94a0]">Loading 3D Trajectory...</span>
+        </div>
+      </div>
+    ),
+  }
+);
+
+
 interface Pillar {
   id: string;
-  icon: React.ElementType;
+  icon: React.ComponentType<{ className?: string }>;
   title: string;
   tag: string;
   description: string;
@@ -117,7 +135,10 @@ export function About() {
           </p>
         </div>
 
-        {/* Visual Progression: 3 Years → 7 Months → NOW */}
+        {/* 3D Interactive Timeline Conduit */}
+        <AboutTimeline3D activeStep={activeStep} onSelectStep={setActiveStep} />
+
+        {/* Visual Progression: 3 Years → 7 Months → NOW (HTML Semantic Navigation) */}
         <div className="mb-20">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 relative">
             {PROGRESSION.map((step, idx) => {

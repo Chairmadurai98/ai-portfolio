@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import dynamic from "next/dynamic";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,6 +17,20 @@ import {
 } from "lucide-react";
 import { Github, Linkedin } from "@/components/icons";
 import confetti from "canvas-confetti";
+
+// Dynamic lazy load of Contact 3D Core
+const ContactCore3D = dynamic(
+  () => import("@/components/3d/contact-core-3d"),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="w-full h-[180px] max-w-xs mx-auto mb-4 flex items-center justify-center">
+        <div className="h-6 w-6 rounded-full border border-[#00f5a0]/40 border-t-[#00f5a0] animate-spin" />
+      </div>
+    ),
+  }
+);
+
 
 const PROJECT_TYPES = [
   "AI Engineering",
@@ -55,10 +70,14 @@ export function Contact() {
     <section id="contact" className="py-24 relative bg-[#08090a] border-t border-white/[0.06]">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
-        <div className="flex flex-col items-center text-center mb-16">
+        <div className="flex flex-col items-center text-center mb-10">
           <Badge variant="accent" className="mb-3">
             Start a Conversation
           </Badge>
+
+          {/* 3D Monolith Core Completing the Story */}
+          <ContactCore3D />
+
           <h2 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white mb-4">
             Let&apos;s build something <span className="text-gradient">intelligent</span>.
           </h2>
