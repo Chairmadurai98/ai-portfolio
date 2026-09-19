@@ -98,6 +98,8 @@ const jsonLd = {
   ],
 };
 
+import { LenisProvider } from "@/components/providers/lenis-provider";
+
 export default function RootLayout({
   children,
 }: {
@@ -106,7 +108,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} dark scroll-smooth antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} dark antialiased`}
     >
       <head>
         <script
@@ -115,7 +117,7 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-screen bg-[#08090a] text-[#ededed] font-sans selection:bg-[#00f5a0]/20 selection:text-[#00f5a0]">
-        {children}
+        <LenisProvider>{children}</LenisProvider>
       </body>
     </html>
   );

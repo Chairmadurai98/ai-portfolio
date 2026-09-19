@@ -25,7 +25,10 @@ export function ProjectDialog({ project, open, onOpenChange }: ProjectDialogProp
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[88vh] overflow-y-auto bg-[#0a0c0f] border-white/[0.12] p-6 sm:p-8">
+      <DialogContent
+        data-lenis-prevent
+        className="max-w-4xl max-h-[88vh] overflow-y-auto bg-[#0a0c0f] border-white/[0.12] p-6 sm:p-8"
+      >
         <DialogHeader className="pb-4 border-b border-white/[0.08]">
           <div className="flex flex-wrap items-center gap-2 mb-2">
             <Badge variant="accent" className="font-mono text-xs">

@@ -89,7 +89,7 @@ function getCellColor(level: number) {
 // Server Component: zero client JS shipped for this section
 export function GitHubActivity() {
   return (
-    <section className="py-24 relative bg-[#08090a] border-t border-white/[0.06]">
+    <section className="py-24 relative bg-[#08090a]/80 backdrop-blur-[6px] border-t border-white/[0.06]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="flex flex-col items-center text-center mb-14">

@@ -7,19 +7,6 @@ import { ArrowRight, Terminal, Cpu, Database, Layout, CheckCircle2 } from "lucid
 import { Button } from "@/components/ui/button";
 import type { PipelineNode } from "@/types";
 
-// Dynamic lazy-load 3D scene with SSR disabled
-const HeroCore = dynamic(() => import("@/components/3d/hero-core"), {
-  ssr: false,
-  loading: () => (
-    <div className="w-full h-[460px] sm:h-[520px] max-w-2xl mx-auto flex items-center justify-center">
-      <div className="flex flex-col items-center space-y-3">
-        <div className="h-12 w-12 rounded-full border border-[#00f5a0]/40 border-t-[#00f5a0] animate-spin" />
-        <span className="text-xs font-mono text-[#8e94a0]">Initializing 3D Interface...</span>
-      </div>
-    </div>
-  ),
-});
-
 
 const PIPELINE_NODES: PipelineNode[] = [
   { id: "user", name: "User", sub: "Input & Intent", icon: Terminal, metric: "0ms" },
@@ -36,7 +23,7 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="relative min-h-[95vh] pt-28 pb-20 flex flex-col justify-center items-center overflow-hidden bg-grid-subtle"
+      className="relative min-h-[95vh] pt-28 pb-20 flex flex-col justify-center items-center overflow-hidden bg-transparent"
     >
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center flex flex-col items-center">
         {/* Availability Badge */}
@@ -67,12 +54,12 @@ export function Hero() {
         </h1>
 
         {/* Supporting Narrative */}
-        <p className="text-base sm:text-lg lg:text-xl text-[#8e94a0] max-w-2xl leading-relaxed mb-8">
+        <p className="text-base sm:text-lg lg:text-xl text-white/95 font-medium max-w-2xl leading-relaxed mb-8 drop-shadow-[0_2px_12px_rgba(0,0,0,0.9)]">
           AI Engineer with 7 months of experience building AI-powered applications, backed by 3 years of frontend engineering experience.
         </p>
 
         {/* CTA Buttons */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto mb-10 z-20">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full sm:w-auto mb-6 z-20">
           <Button
             asChild
             size="lg"
@@ -97,9 +84,22 @@ export function Hero() {
           </Button>
         </div>
 
-        {/* 3D Interactive AI Interface Core Scene */}
-        <div className="w-full max-w-3xl my-2">
-          <HeroCore />
+        {/* 3D Interactive AI Core Focal Viewport */}
+        <div className="w-full max-w-2xl h-[340px] sm:h-[400px] my-4 relative flex items-center justify-center pointer-events-none">
+          {/* Subtle Outer Holographic Reticle */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <div className="w-72 h-72 sm:w-96 sm:h-96 rounded-full border border-dashed border-[#00f5a0]/15 animate-spin [animation-duration:40s]" />
+            <div className="absolute w-56 h-56 sm:w-72 sm:h-72 rounded-full border border-white/[0.04]" />
+            <div className="absolute inset-0 bg-radial from-[#00f5a0]/[0.06] via-transparent to-transparent" />
+          </div>
+
+          {/* Ethereal Floating Status Badge */}
+          <div className="absolute bottom-2 z-10 px-3 py-1 rounded-full border border-white/[0.08] bg-[#0c0e11]/60 backdrop-blur-md flex items-center space-x-2">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#00f5a0] animate-ping" />
+            <span className="text-[10px] font-mono text-[#a1a1aa] tracking-wider uppercase">
+              Living 3D Environment • Scroll to Journey
+            </span>
+          </div>
         </div>
 
         {/* System Pipeline Architecture Telemetry Bar */}
