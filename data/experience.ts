@@ -1,14 +1,4 @@
-export interface ExperienceItem {
-  id: string;
-  role: string;
-  duration: string;
-  period: string;
-  summary: string;
-  type: "AI Engineering" | "Frontend Engineering";
-  responsibilities: string[];
-  keyWins: string[];
-  technologies: string[];
-}
+import type { ExperienceItem } from "@/types";
 
 export const EXPERIENCES: ExperienceItem[] = [
   {
@@ -24,12 +14,12 @@ export const EXPERIENCES: ExperienceItem[] = [
       "Design and deploy Retrieval-Augmented Generation (RAG) pipelines with hybrid search (dense embeddings + BM25 keyword matching) and vector databases.",
       "Pioneer low-latency streaming UX patterns (Server-Sent Events, WebSockets) with speculative UI updates and graceful fallback states.",
       "Develop autonomous multi-agent tool-calling systems with guardrails, human-in-the-loop controls, and cycle prevention.",
-      "Audit model inference latency, token economics, and response quality using systematic evaluation benchmarks."
+      "Audit model inference latency, token economics, and response quality using systematic evaluation benchmarks.",
     ],
     keyWins: [
       "Cut end-to-end perceived AI latency by 70% by designing streaming state machines and speculative UI states.",
       "Shipped 4 production AI feature modules used by thousands of daily active users.",
-      "Designed an automated RAG evaluation framework that improved context retrieval precision by 32%."
+      "Designed an automated RAG evaluation framework that improved context retrieval precision by 32%.",
     ],
     technologies: [
       "LLM APIs",
@@ -40,8 +30,8 @@ export const EXPERIENCES: ExperienceItem[] = [
       "Next.js",
       "TypeScript",
       "LangChain",
-      "SSE / WebSockets"
-    ]
+      "SSE / WebSockets",
+    ],
   },
   {
     id: "frontend-engineer",
@@ -56,12 +46,12 @@ export const EXPERIENCES: ExperienceItem[] = [
       "Created modular, accessible component libraries and design systems adhering to WCAG 2.1 AAA accessibility guidelines.",
       "Optimized browser rendering performance, Core Web Vitals (LCP, FID, CLS), and reduced JavaScript bundle sizes through strategic code-splitting.",
       "Implemented real-time data synchronization with WebSockets, optimistic UI updates, and client-side caching (TanStack Query / SWR).",
-      "Partnered with product managers and UX designers to transform ambiguous feature specs into polished, pixel-perfect user experiences."
+      "Partnered with product managers and UX designers to transform ambiguous feature specs into polished, pixel-perfect user experiences.",
     ],
     keyWins: [
       "Scaled a core enterprise dashboard from 10k to 250k+ monthly active users without UI performance degradation.",
       "Reduced bundle size by 42% through tree-shaking, lazy loading, and custom lightweight UI primitives.",
-      "Mentored junior developers and established frontend coding standards, linting rules, and CI testing pipelines."
+      "Mentored junior developers and established frontend coding standards, linting rules, and CI testing pipelines.",
     ],
     technologies: [
       "React",
@@ -73,7 +63,7 @@ export const EXPERIENCES: ExperienceItem[] = [
       "State Management",
       "REST & GraphQL",
       "Git / CI/CD",
-      "Web Performance"
-    ]
-  }
+      "Web Performance",
+    ],
+  },
 ];

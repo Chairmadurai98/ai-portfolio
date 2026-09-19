@@ -1,11 +1,11 @@
 "use client";
 
 import * as React from "react";
-import { Project } from "@/lib/projects";
+import type { Project } from "@/types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
-import { ExternalLink, ArrowUpRight, Sparkles, Terminal, Layers, CheckCircle2 } from "lucide-react";
+import { Card } from "@/components/ui/card";
+import { ExternalLink, ArrowUpRight, Sparkles, CheckCircle2 } from "lucide-react";
 import { Github } from "@/components/icons";
 
 interface ProjectCardProps {
@@ -64,7 +64,7 @@ export function ProjectCard({ project, isLarge = false, onSelect }: ProjectCardP
 
               {/* Visual simulated stream */}
               <div className="space-y-2 font-mono text-xs">
-                <div className="text-[#71717a]">// Speculative Token Interpolator & SSE Buffer</div>
+                <div className="text-[#71717a]">{"// Speculative Token Interpolator & SSE Buffer"}</div>
                 <div className="text-[#ededed]">
                   <span className="text-[#00f5a0]">stream</span>.on(<span className="text-amber-300">&apos;token&apos;</span>, (chunk) =&gt; &#123;
                 </div>
@@ -234,6 +234,7 @@ export function ProjectCard({ project, isLarge = false, onSelect }: ProjectCardP
             target="_blank"
             rel="noreferrer"
             className="p-1.5 text-[#8e94a0] hover:text-white rounded-md hover:bg-white/[0.06]"
+            aria-label="GitHub Repository"
           >
             <Github className="h-3.5 w-3.5" />
           </a>
@@ -242,6 +243,7 @@ export function ProjectCard({ project, isLarge = false, onSelect }: ProjectCardP
             target="_blank"
             rel="noreferrer"
             className="p-1.5 text-[#8e94a0] hover:text-[#00f5a0] rounded-md hover:bg-white/[0.06]"
+            aria-label="Live Demo"
           >
             <ExternalLink className="h-3.5 w-3.5" />
           </a>

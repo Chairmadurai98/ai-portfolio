@@ -1,14 +1,11 @@
-"use client";
-
 import * as React from "react";
-import { EXPERIENCES, ExperienceItem } from "@/lib/experience";
+import { EXPERIENCES } from "@/data/experience";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-import { Briefcase, Calendar, CheckCircle2, ChevronRight, Sparkles, Terminal } from "lucide-react";
+import { Calendar, CheckCircle2, Sparkles, Terminal } from "lucide-react";
 
+// Server Component: zero client JS shipped for this section
 export function Experience() {
-  const [selectedId, setSelectedId] = React.useState<string>(EXPERIENCES[0].id);
-
   return (
     <section id="experience" className="py-24 relative bg-[#08090a] border-t border-white/[0.06]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -116,7 +113,7 @@ export function Experience() {
                         {/* Technologies */}
                         <div>
                           <h4 className="text-xs font-mono uppercase tracking-wider text-white/[0.6] mb-2.5">
-                            Technologies & Tools
+                            Technologies &amp; Tools
                           </h4>
                           <div className="flex flex-wrap gap-1.5">
                             {exp.technologies.map((tech) => (

@@ -12,16 +12,22 @@ import {
   Check,
   Send,
   Sparkles,
-  ArrowUpRight,
   MessageSquare,
 } from "lucide-react";
 import { Github, Linkedin } from "@/components/icons";
 import confetti from "canvas-confetti";
 
+const PROJECT_TYPES = [
+  "AI Engineering",
+  "Frontend / Design System",
+  "Full-Stack AI App",
+  "Architecture Advisory",
+] as const;
+
 export function Contact() {
   const [copied, setCopied] = React.useState(false);
   const [formSubmitted, setFormSubmitted] = React.useState(false);
-  const [projectType, setProjectType] = React.useState("AI Engineering");
+  const [projectType, setProjectType] = React.useState<string>("AI Engineering");
   const emailAddress = "engineer@example.com";
 
   const handleCopyEmail = () => {
@@ -33,7 +39,6 @@ export function Contact() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setFormSubmitted(true);
-    // Fire celebratory confetti
     try {
       confetti({
         particleCount: 80,
@@ -153,52 +158,68 @@ export function Contact() {
                 </span>
               </div>
 
-              {/* Project Type Selector */}
+              {/* Project Type Selector with Radiogroup a11y */}
               <div>
-                <label className="block text-xs font-mono text-[#8e94a0] uppercase tracking-wider mb-2">
+                <label id="project-type-label" className="block text-xs font-mono text-[#8e94a0] uppercase tracking-wider mb-2">
                   What are you building?
                 </label>
-                <div className="flex flex-wrap gap-2">
-                  {[
-                    "AI Engineering",
-                    "Frontend / Design System",
-                    "Full-Stack AI App",
-                    "Architecture Advisory"
-                  ].map((type) => (
-                    <button
-                      key={type}
-                      type="button"
-                      onClick={() => setProjectType(type)}
-                      className={`px-3.5 py-1.5 rounded-lg text-xs font-medium border transition-all cursor-pointer ${
-                        projectType === type
-                          ? "bg-[#00f5a0]/15 border-[#00f5a0]/50 text-[#00f5a0]"
-                          : "bg-white/[0.02] border-white/[0.08] text-[#8e94a0] hover:text-white hover:border-white/[0.2]"
-                      }`}
-                    >
-                      {type}
-                    </button>
-                  ))}
+                <div
+                  role="radiogroup"
+                  aria-labelledby="project-type-label"
+                  className="flex flex-wrap gap-2"
+                >
+                  {PROJECT_TYPES.map((type) => {
+                    const isSelected = projectType === type;
+                    return (
+                      <button
+                        key={type}
+                        type="button"
+                        role="radio"
+                        aria-checked={isSelected}
+                        onClick={() => setProjectType(type)}
+                        className={`px-3.5 py-1.5 rounded-lg text-xs font-medium border transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#00f5a0] ${
+                          isSelected
+                            ? "bg-[#00f5a0]/15 border-[#00f5a0]/50 text-[#00f5a0]"
+                            : "bg-white/[0.02] border-white/[0.08] text-[#8e94a0] hover:text-white hover:border-white/[0.2]"
+                        }`}
+                      >
+                        {type}
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-mono text-[#8e94a0] uppercase tracking-wider mb-1.5">
+                  <label
+                    htmlFor="contact-name"
+                    className="block text-xs font-mono text-[#8e94a0] uppercase tracking-wider mb-1.5"
+                  >
                     Your Name
                   </label>
                   <Input
+                    id="contact-name"
+                    name="name"
                     required
+                    autoComplete="name"
                     placeholder="Jane Doe"
                     className="bg-[#101317] border-white/[0.1] text-xs sm:text-sm"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-mono text-[#8e94a0] uppercase tracking-wider mb-1.5">
+                  <label
+                    htmlFor="contact-email"
+                    className="block text-xs font-mono text-[#8e94a0] uppercase tracking-wider mb-1.5"
+                  >
                     Your Email
                   </label>
                   <Input
+                    id="contact-email"
+                    name="email"
                     required
                     type="email"
+                    autoComplete="email"
                     placeholder="jane@company.com"
                     className="bg-[#101317] border-white/[0.1] text-xs sm:text-sm"
                   />
@@ -206,10 +227,15 @@ export function Contact() {
               </div>
 
               <div>
-                <label className="block text-xs font-mono text-[#8e94a0] uppercase tracking-wider mb-1.5">
+                <label
+                  htmlFor="contact-details"
+                  className="block text-xs font-mono text-[#8e94a0] uppercase tracking-wider mb-1.5"
+                >
                   Project Details or Challenge
                 </label>
                 <Textarea
+                  id="contact-details"
+                  name="details"
                   required
                   rows={4}
                   placeholder="Tell me about your product vision, engineering constraints, or AI requirements..."

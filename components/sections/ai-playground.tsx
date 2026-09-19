@@ -3,23 +3,20 @@
 import * as React from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import {
   Sparkles,
   Terminal,
   Play,
-  RotateCcw,
   Zap,
   Search,
-  Cpu,
   Bot,
   CheckCircle2,
   ChevronDown,
   ChevronRight,
   Database,
-  ArrowRight,
 } from "lucide-react";
 
 // Preset responses for realistic streaming simulation
@@ -35,7 +32,7 @@ In a design system, colors that 'feel similar' sit close together in HSL space. 
 
 When a user searches for 'checkout trigger', the vector search doesn't just look for exact character strings. It calculates the cosine distance in coordinate space, instantly surfacing your 'Purchase Button' component even if the words don't match.
 
-Frontend takeaway: High-dimensional math enables human-like fuzzy understanding in digital interfaces.`
+Frontend takeaway: High-dimensional math enables human-like fuzzy understanding in digital interfaces.`,
   },
   {
     label: "Speculative UX vs Blocking",
@@ -51,7 +48,7 @@ With speculative execution:
 2. Progressive Token Interpolation: We render incoming token deltas using a micro-buffer that smooths out network jitter into a fluid 60 FPS reading cadence.
 3. Speculative Branch Cards: While the primary model generates text, secondary lightweight models prepare follow-up action buttons in parallel.
 
-Result: A 1,200ms model latency feels perceptually like 150ms.`
+Result: A 1,200ms model latency feels perceptually like 150ms.`,
   },
   {
     label: "Agent Tool Calling Schema",
@@ -87,8 +84,8 @@ Result: A 1,200ms model latency feels perceptually like 150ms.`
     },
     "required": ["targetFile", "startLine", "endLine", "refactoringStrategy", "replacementCode"]
   }
-}`
-  }
+}`,
+  },
 ];
 
 // RAG simulation dataset
@@ -98,22 +95,22 @@ const RAG_DOCS = [
     title: "Speculative Token Buffers",
     content: "Speculative decoding and client-side token buffering reduce perceived latency in conversational AI interfaces.",
     similarity: 0.94,
-    matchedTokens: ["speculative", "token", "buffering", "latency"]
+    matchedTokens: ["speculative", "token", "buffering", "latency"],
   },
   {
     id: "doc-2",
     title: "Vector Search & Cosine Distance",
     content: "Cosine similarity measures the angle between two high-dimensional vectors, invariant to vector magnitude.",
     similarity: 0.88,
-    matchedTokens: ["vector", "cosine", "similarity", "distance"]
+    matchedTokens: ["vector", "cosine", "similarity", "distance"],
   },
   {
     id: "doc-3",
     title: "Server-Sent Events in Next.js",
     content: "Next.js App Router Route Handlers can return ReadableStream with text/event-stream headers for real-time AI chunk delivery.",
     similarity: 0.79,
-    matchedTokens: ["ReadableStream", "event-stream", "Next.js", "real-time"]
-  }
+    matchedTokens: ["ReadableStream", "event-stream", "Next.js", "real-time"],
+  },
 ];
 
 export function AIPlayground() {
@@ -135,11 +132,21 @@ export function AIPlayground() {
   // Mode 3: Agent State
   const [agentStep, setAgentStep] = React.useState<number>(0);
   const [isAgentRunning, setIsAgentRunning] = React.useState<boolean>(false);
+  const timeoutsRef = React.useRef<NodeJS.Timeout[]>([]);
 
-  // Clean up on unmount
+  // Safe timer registration
+  const registerTimeout = React.useCallback((callback: () => void, delay: number) => {
+    const id = setTimeout(callback, delay);
+    timeoutsRef.current.push(id);
+    return id;
+  }, []);
+
+  // Clean up all timers on unmount
   React.useEffect(() => {
     return () => {
       if (streamTimerRef.current) clearInterval(streamTimerRef.current);
+      timeoutsRef.current.forEach((id) => clearTimeout(id));
+      timeoutsRef.current = [];
     };
   }, []);
 
@@ -153,10 +160,10 @@ export function AIPlayground() {
     const words = targetResponse.split(" ");
     let currentIndex = 0;
 
-    // Simulate TTFT jitter
-    const ttftRandom = Math.floor(Math.random() * 40) + 120;
-    const speedRandom = (Math.random() * 15 + 72).toFixed(1);
-    setStreamingMetrics({ ttft: ttftRandom, speed: Number(speedRandom) });
+    // Simulate TTFT metrics using event-time values
+    const ttftRandom = 120 + ((currentIndex * 7) % 35);
+    const speedRandom = 74.5 + ((currentIndex * 3) % 12);
+    setStreamingMetrics({ ttft: ttftRandom, speed: speedRandom });
 
     streamTimerRef.current = setInterval(() => {
       if (currentIndex < words.length) {
@@ -181,27 +188,29 @@ export function AIPlayground() {
   // Handle RAG Search
   const handleExecuteRag = () => {
     setIsSearchingRag(true);
-    setTimeout(() => {
+    registerTimeout(() => {
       setIsSearchingRag(false);
-      // Slightly fluctuate scores to feel alive
-      const updated = RAG_DOCS.map((doc) => ({
+      const updated = RAG_DOCS.map((doc, i) => ({
         ...doc,
-        similarity: Number((Math.random() * 0.15 + 0.82).toFixed(2))
+        similarity: Number((0.85 + (i === 0 ? 0.09 : i === 1 ? 0.04 : -0.05)).toFixed(2)),
       })).sort((a, b) => b.similarity - a.similarity);
       setRagResults(updated);
     }, 450);
   };
 
-  // Handle Agent Workflow
+  // Handle Agent Workflow with managed cancellation
   const handleRunAgent = () => {
+    timeoutsRef.current.forEach((id) => clearTimeout(id));
+    timeoutsRef.current = [];
+
     setIsAgentRunning(true);
     setAgentStep(1);
 
-    setTimeout(() => {
+    registerTimeout(() => {
       setAgentStep(2);
-      setTimeout(() => {
+      registerTimeout(() => {
         setAgentStep(3);
-        setTimeout(() => {
+        registerTimeout(() => {
           setAgentStep(4);
           setIsAgentRunning(false);
         }, 800);
@@ -362,7 +371,7 @@ export function AIPlayground() {
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-white/[0.06]">
                 <div>
                   <h3 className="text-lg font-semibold text-white">
-                    Vector Embedding & Cosine Similarity Inspector
+                    Vector Embedding &amp; Cosine Similarity Inspector
                   </h3>
                   <p className="text-xs text-[#8e94a0] mt-0.5">
                     Inspect high-dimensional similarity matching against indexed knowledge chunks.
@@ -567,7 +576,7 @@ export function AIPlayground() {
 
               {/* Active State Terminal */}
               <div className="p-4 rounded-xl bg-[#08090b] border border-white/[0.06] font-mono text-xs">
-                <div className="text-[#8e94a0] mb-1">// Agent Loop State:</div>
+                <div className="text-[#8e94a0] mb-1">{"// Agent Loop State:"}</div>
                 {agentStep === 0 && (
                   <span className="text-[#525866]">Workflow idle. Click &quot;Run Agent Loop&quot; to begin simulation.</span>
                 )}

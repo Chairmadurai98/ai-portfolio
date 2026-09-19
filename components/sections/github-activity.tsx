@@ -1,24 +1,12 @@
-"use client";
-
 import * as React from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-import { Star, GitFork, ExternalLink, GitCommit, Code2 } from "lucide-react";
+import { Star, GitFork, ExternalLink, GitCommit } from "lucide-react";
 import { Github } from "@/components/icons";
+import type { RepositoryItem } from "@/types";
 
-interface RepoItem {
-  name: string;
-  desc: string;
-  stars: number;
-  forks: number;
-  language: string;
-  languageColor: string;
-  tag: string;
-  url: string;
-}
-
-const REPOSITORIES: RepoItem[] = [
+const REPOSITORIES: RepositoryItem[] = [
   {
     name: "streaming-sse-buffer",
     desc: "Lightweight speculative token buffer & state machine for Server-Sent Events in React.",
@@ -27,7 +15,7 @@ const REPOSITORIES: RepoItem[] = [
     language: "TypeScript",
     languageColor: "#3178c6",
     tag: "AI / Streaming",
-    url: "https://github.com"
+    url: "https://github.com",
   },
   {
     name: "vector-similarity-canvas",
@@ -37,7 +25,7 @@ const REPOSITORIES: RepoItem[] = [
     language: "TypeScript",
     languageColor: "#3178c6",
     tag: "Vector DB",
-    url: "https://github.com"
+    url: "https://github.com",
   },
   {
     name: "headless-token-system",
@@ -47,16 +35,14 @@ const REPOSITORIES: RepoItem[] = [
     language: "JavaScript",
     languageColor: "#f7df1e",
     tag: "Design System",
-    url: "https://github.com"
-  }
+    url: "https://github.com",
+  },
 ];
 
 // Generate realistic commit heatmap blocks (52 weeks x 7 days)
-const WEEKS_COUNT = 38; // 38 weeks for clean desktop layout without overflow
+const WEEKS_COUNT = 38;
 const DAYS_PER_WEEK = 7;
 
-// Deterministic pseudo-random number generator (Linear Congruential Generator)
-// to ensure identical output between SSR and client hydration
 function generateDeterministicHeatmap(): number[][] {
   let seed = 1337;
   const nextRand = () => {
@@ -68,7 +54,6 @@ function generateDeterministicHeatmap(): number[][] {
   for (let w = 0; w < WEEKS_COUNT; w++) {
     const week: number[] = [];
     for (let d = 0; d < DAYS_PER_WEEK; d++) {
-      // Higher activity on weekdays, lower on weekends, occasional streaks
       const isWeekend = d === 0 || d === 6;
       const base = isWeekend ? 0.15 : 0.65;
       const rand = nextRand();
@@ -86,24 +71,23 @@ function generateDeterministicHeatmap(): number[][] {
 
 const HEATMAP_MATRIX = generateDeterministicHeatmap();
 
+function getCellColor(level: number) {
+  switch (level) {
+    case 1:
+      return "bg-[#00f5a0]/20 border-[#00f5a0]/30";
+    case 2:
+      return "bg-[#00f5a0]/40 border-[#00f5a0]/50";
+    case 3:
+      return "bg-[#00f5a0]/70 border-[#00f5a0]/80";
+    case 4:
+      return "bg-[#00f5a0] border-[#0df2c8] shadow-[0_0_8px_rgba(0,245,160,0.4)]";
+    default:
+      return "bg-white/[0.03] border-white/[0.04]";
+  }
+}
+
+// Server Component: zero client JS shipped for this section
 export function GitHubActivity() {
-  const heatmapMatrix = HEATMAP_MATRIX;
-
-  const getCellColor = (level: number) => {
-    switch (level) {
-      case 1:
-        return "bg-[#00f5a0]/20 border-[#00f5a0]/30";
-      case 2:
-        return "bg-[#00f5a0]/40 border-[#00f5a0]/50";
-      case 3:
-        return "bg-[#00f5a0]/70 border-[#00f5a0]/80";
-      case 4:
-        return "bg-[#00f5a0] border-[#0df2c8] shadow-[0_0_8px_rgba(0,245,160,0.4)]";
-      default:
-        return "bg-white/[0.03] border-white/[0.04]";
-    }
-  };
-
   return (
     <section className="py-24 relative bg-[#08090a] border-t border-white/[0.06]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -148,7 +132,7 @@ export function GitHubActivity() {
           <div className="py-6 overflow-x-auto">
             <div className="min-w-[680px]">
               <div className="flex gap-1.5 justify-between">
-                {heatmapMatrix.map((week, wIdx) => (
+                {HEATMAP_MATRIX.map((week, wIdx) => (
                   <div key={wIdx} className="flex flex-col gap-1.5">
                     {week.map((level, dIdx) => (
                       <div

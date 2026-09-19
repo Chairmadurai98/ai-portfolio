@@ -1,16 +1,21 @@
 "use client";
 
 import * as React from "react";
-import { PROJECTS, Project } from "@/lib/projects";
-import { ProjectCard } from "@/components/project-card";
-import { ProjectDialog } from "@/components/project-dialog";
+import { PROJECTS } from "@/data/projects";
+import type { Project, ProjectCategory } from "@/types";
+import { ProjectCard } from "@/components/projects/project-card";
+import { ProjectDialog } from "@/components/projects/project-dialog";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-const CATEGORIES = ["All", "AI", "Frontend", "Experiments"] as const;
+const CATEGORIES: readonly ("All" | ProjectCategory)[] = [
+  "All",
+  "AI",
+  "Frontend",
+  "Experiments",
+] as const;
 
 export function Projects() {
-  const [selectedCategory, setSelectedCategory] = React.useState<string>("All");
+  const [selectedCategory, setSelectedCategory] = React.useState<"All" | ProjectCategory>("All");
   const [activeProject, setActiveProject] = React.useState<Project | null>(null);
   const [dialogOpen, setDialogOpen] = React.useState<boolean>(false);
 
@@ -43,22 +48,31 @@ export function Projects() {
             In-depth case studies of production AI systems, low-latency streaming interfaces, and enterprise frontend architecture.
           </p>
 
-          {/* Category Filter Tabs */}
+          {/* Category Filter Tabs with Accessibility Semantics */}
           <div className="mt-8">
-            <div className="inline-flex rounded-full bg-[#0e1116] p-1.5 border border-white/[0.08]">
-              {CATEGORIES.map((cat) => (
-                <button
-                  key={cat}
-                  onClick={() => setSelectedCategory(cat)}
-                  className={`px-5 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer ${
-                    selectedCategory === cat
-                      ? "bg-[#00f5a0] text-[#08090a] font-semibold shadow-[0_0_15px_rgba(0,245,160,0.25)]"
-                      : "text-[#8e94a0] hover:text-white"
-                  }`}
-                >
-                  {cat}
-                </button>
-              ))}
+            <div
+              role="tablist"
+              aria-label="Project categories"
+              className="inline-flex rounded-full bg-[#0e1116] p-1.5 border border-white/[0.08]"
+            >
+              {CATEGORIES.map((cat) => {
+                const isSelected = selectedCategory === cat;
+                return (
+                  <button
+                    key={cat}
+                    role="tab"
+                    aria-selected={isSelected}
+                    onClick={() => setSelectedCategory(cat)}
+                    className={`px-5 py-1.5 rounded-full text-xs font-medium transition-all cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#00f5a0] ${
+                      isSelected
+                        ? "bg-[#00f5a0] text-[#08090a] font-semibold shadow-[0_0_15px_rgba(0,245,160,0.25)]"
+                        : "text-[#8e94a0] hover:text-white"
+                    }`}
+                  >
+                    {cat}
+                  </button>
+                );
+              })}
             </div>
           </div>
         </div>
@@ -93,7 +107,7 @@ export function Projects() {
               </div>
             </div>
 
-            {/* Remaining Projects in 2-column or 3-column Grid */}
+            {/* Remaining Projects in 2-column Grid */}
             {secondaryProjects.length > 2 && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
                 {secondaryProjects.slice(2).map((project) => (

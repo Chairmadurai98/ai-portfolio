@@ -2,19 +2,11 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { ArrowRight, Sparkles, Terminal, Cpu, Database, Layout, CheckCircle2 } from "lucide-react";
+import { ArrowRight, Terminal, Cpu, Database, Layout, CheckCircle2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import type { PipelineNode } from "@/types";
 
-interface NodeItem {
-  id: string;
-  name: string;
-  sub: string;
-  icon: React.ElementType;
-  metric: string;
-}
-
-const PIPELINE_NODES: NodeItem[] = [
+const PIPELINE_NODES: PipelineNode[] = [
   { id: "user", name: "User", sub: "Input & Intent", icon: Terminal, metric: "0ms" },
   { id: "interface", name: "Interface", sub: "Speculative UX", icon: Layout, metric: "8ms" },
   { id: "ai", name: "AI Engine", sub: "LLM / Agent", icon: Cpu, metric: "140ms" },
@@ -23,22 +15,38 @@ const PIPELINE_NODES: NodeItem[] = [
 ];
 
 export function Hero() {
-  const [mousePos, setMousePos] = React.useState({ x: 0, y: 0 });
   const [activeNode, setActiveNode] = React.useState<string>("ai");
   const heroRef = React.useRef<HTMLElement>(null);
+  const glowRef = React.useRef<HTMLDivElement>(null);
+  const tiltRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
     // Check prefers-reduced-motion
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (mediaQuery.matches) return;
 
+    let rafId: number | null = null;
+
     const handleMouseMove = (e: MouseEvent) => {
       if (!heroRef.current) return;
-      const rect = heroRef.current.getBoundingClientRect();
-      // Relative mouse position within hero (-0.5 to 0.5)
-      const x = (e.clientX - rect.left) / rect.width - 0.5;
-      const y = (e.clientY - rect.top) / rect.height - 0.5;
-      setMousePos({ x, y });
+
+      if (rafId !== null) cancelAnimationFrame(rafId);
+
+      rafId = requestAnimationFrame(() => {
+        if (!heroRef.current) return;
+        const rect = heroRef.current.getBoundingClientRect();
+        // Relative mouse position within hero (-0.5 to 0.5)
+        const x = (e.clientX - rect.left) / rect.width - 0.5;
+        const y = (e.clientY - rect.top) / rect.height - 0.5;
+
+        // Performant direct DOM styling without triggering React reconciliation
+        if (glowRef.current) {
+          glowRef.current.style.transform = `translate(${x * 40}px, ${y * 40}px)`;
+        }
+        if (tiltRef.current) {
+          tiltRef.current.style.transform = `perspective(1000px) rotateX(${y * -6}deg) rotateY(${x * 6}deg)`;
+        }
+      });
     };
 
     const target = heroRef.current;
@@ -46,11 +54,14 @@ export function Hero() {
       target.addEventListener("mousemove", handleMouseMove, { passive: true });
     }
     return () => {
+      if (rafId !== null) cancelAnimationFrame(rafId);
       if (target) {
         target.removeEventListener("mousemove", handleMouseMove);
       }
     };
   }, []);
+
+  const activeNodeData = PIPELINE_NODES.find((n) => n.id === activeNode) ?? PIPELINE_NODES[2];
 
   return (
     <section
@@ -58,12 +69,10 @@ export function Hero() {
       ref={heroRef}
       className="relative min-h-[92vh] pt-32 pb-20 flex flex-col justify-center items-center overflow-hidden bg-grid-subtle"
     >
-      {/* Subtle cursor-following background glow */}
+      {/* Subtle cursor-following background glow (GPU accelerated, zero React re-renders) */}
       <div
-        className="pointer-events-none absolute -inset-px opacity-40 transition-transform duration-500 ease-out"
-        style={{
-          transform: `translate(${mousePos.x * 40}px, ${mousePos.y * 40}px)`,
-        }}
+        ref={glowRef}
+        className="pointer-events-none absolute -inset-px opacity-40 transition-transform duration-500 ease-out will-change-transform"
       >
         <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[520px] h-[520px] bg-[#00f5a0]/[0.07] rounded-full blur-[120px]" />
         <div className="absolute top-1/2 left-1/3 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] bg-[#0df2c8]/[0.05] rounded-full blur-[100px]" />
@@ -73,8 +82,8 @@ export function Hero() {
         {/* Availability Badge */}
         <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full border border-white/[0.1] bg-[#0f1216]/80 backdrop-blur-md mb-8 animate-in fade-in slide-in-from-bottom-3 duration-500">
           <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00f5a0] opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00f5a0]"></span>
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00f5a0] opacity-75" />
+            <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00f5a0]" />
           </span>
           <span className="text-xs font-mono text-[#a1a1aa] tracking-tight">
             Open to interesting opportunities
@@ -136,7 +145,7 @@ export function Hero() {
 
             <div className="flex items-center justify-between pb-4 mb-4 border-b border-white/[0.06] text-left">
               <div className="flex items-center space-x-2">
-                <span className="h-2.5 w-2.5 rounded-full bg-[#00f5a0]/80"></span>
+                <span className="h-2.5 w-2.5 rounded-full bg-[#00f5a0]/80" />
                 <span className="text-xs font-mono font-medium text-white tracking-wider uppercase">
                   System Pipeline Architecture
                 </span>
@@ -146,12 +155,12 @@ export function Hero() {
               </span>
             </div>
 
-            {/* Nodes Container with subtle tilt */}
+            {/* Nodes Container with subtle tilt (GPU accelerated direct transform) */}
             <div
-              className="grid grid-cols-5 gap-2 sm:gap-3 transition-transform duration-300 ease-out"
-              style={{
-                transform: `perspective(1000px) rotateX(${mousePos.y * -6}deg) rotateY(${mousePos.x * 6}deg)`,
-              }}
+              ref={tiltRef}
+              role="tablist"
+              aria-label="System Pipeline Architecture Stages"
+              className="grid grid-cols-5 gap-2 sm:gap-3 transition-transform duration-300 ease-out will-change-transform"
             >
               {PIPELINE_NODES.map((node, index) => {
                 const Icon = node.icon;
@@ -159,8 +168,11 @@ export function Hero() {
                 return (
                   <button
                     key={node.id}
+                    role="tab"
+                    aria-selected={isActive}
+                    aria-label={`${node.name} pipeline stage: ${node.sub}`}
                     onClick={() => setActiveNode(node.id)}
-                    className={`relative flex flex-col items-center p-2.5 sm:p-3.5 rounded-xl border text-center transition-all duration-200 cursor-pointer ${
+                    className={`relative flex flex-col items-center p-2.5 sm:p-3.5 rounded-xl border text-center transition-all duration-200 cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#00f5a0] ${
                       isActive
                         ? "bg-[#00f5a0]/[0.08] border-[#00f5a0]/60 shadow-[0_0_20px_rgba(0,245,160,0.15)]"
                         : "bg-[#111418]/60 border-white/[0.08] hover:border-white/[0.2] hover:bg-[#15191f]"
@@ -168,7 +180,7 @@ export function Hero() {
                   >
                     {/* Flow arrow between nodes on desktop */}
                     {index < PIPELINE_NODES.length - 1 && (
-                      <div className="hidden sm:block absolute -right-3 top-1/2 -translate-y-1/2 text-white/[0.2] z-20 pointer-events-none">
+                      <div className="hidden sm:block absolute -right-3 top-1/2 -translate-y-1/2 text-white/[0.2] z-20 pointer-events-none" aria-hidden="true">
                         →
                       </div>
                     )}
@@ -208,15 +220,15 @@ export function Hero() {
               <div className="flex items-center space-x-2">
                 <span className="text-[#8e94a0]">Current Focus:</span>
                 <span className="font-mono text-[#00f5a0]">
-                  {PIPELINE_NODES.find((n) => n.id === activeNode)?.name}
+                  {activeNodeData.name}
                 </span>
                 <span className="text-white/[0.2]">•</span>
                 <span className="text-[#8e94a0]">
-                  {PIPELINE_NODES.find((n) => n.id === activeNode)?.sub}
+                  {activeNodeData.sub}
                 </span>
               </div>
               <span className="font-mono text-[11px] text-[#00f5a0]/80 bg-[#00f5a0]/10 px-2 py-0.5 rounded">
-                Telemetry: {PIPELINE_NODES.find((n) => n.id === activeNode)?.metric}
+                Telemetry: {activeNodeData.metric}
               </span>
             </div>
           </div>

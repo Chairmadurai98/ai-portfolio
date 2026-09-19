@@ -18,17 +18,7 @@ import {
   Rocket,
   CheckCircle2,
 } from "lucide-react";
-
-interface ProcessStep {
-  number: string;
-  title: string;
-  tagline: string;
-  icon: React.ElementType;
-  goal: string;
-  frontendFocus: string;
-  aiFocus: string;
-  deliverable: string;
-}
+import type { ProcessStep } from "@/types";
 
 const PROCESS_STEPS: ProcessStep[] = [
   {
@@ -39,7 +29,7 @@ const PROCESS_STEPS: ProcessStep[] = [
     goal: "Isolate the actual bottleneck. Clarify whether an LLM is truly required or if deterministic code solves it better.",
     frontendFocus: "Map out the user's mental model, emotional pain points, and target task completion times.",
     aiFocus: "Assess if generative AI creates real leverage or just adds latency and cost.",
-    deliverable: "Problem statement document, user flow diagram, and feasibility matrix."
+    deliverable: "Problem statement document, user flow diagram, and feasibility matrix.",
   },
   {
     number: "02",
@@ -49,7 +39,7 @@ const PROCESS_STEPS: ProcessStep[] = [
     goal: "Discover optimal prompt topologies, test foundation model variants, and evaluate latency vs accuracy trade-offs.",
     frontendFocus: "Review existing UI patterns, establish design tokens, and sketch layout wireframes.",
     aiFocus: "Benchmark candidate models (Claude 3.5, GPT-4o, Gemini 1.5, Groq/Llama) on zero-shot and few-shot tasks.",
-    deliverable: "Model evaluation scorecard and initial UX sketches."
+    deliverable: "Model evaluation scorecard and initial UX sketches.",
   },
   {
     number: "03",
@@ -59,7 +49,7 @@ const PROCESS_STEPS: ProcessStep[] = [
     goal: "Get an interactive prototype into hands within days to validate conversational flow and cognitive load.",
     frontendFocus: "Create rapid clickable mockups in Next.js using Tailwind and shadcn/ui primitives.",
     aiFocus: "Wire up lightweight API calls to test prompt sensitivity and output variance.",
-    deliverable: "Interactive working demo for stakeholder and user feedback."
+    deliverable: "Interactive working demo for stakeholder and user feedback.",
   },
   {
     number: "04",
@@ -69,7 +59,7 @@ const PROCESS_STEPS: ProcessStep[] = [
     goal: "Build streaming data pipelines, vector indices, and robust schema validation.",
     frontendFocus: "Implement Server-Sent Events (SSE) stream consumers, optimistic token rendering, and error boundaries.",
     aiFocus: "Deploy hybrid RAG pipelines, construct agent tool schemas, and enforce JSON Schema validation.",
-    deliverable: "End-to-end streaming data pipeline connecting LLM to UI."
+    deliverable: "End-to-end streaming data pipeline connecting LLM to UI.",
   },
   {
     number: "05",
@@ -79,7 +69,7 @@ const PROCESS_STEPS: ProcessStep[] = [
     goal: "Transform prototype into production-grade, maintainable, and type-safe architecture.",
     frontendFocus: "Audit Core Web Vitals, implement WCAG 2.1 AAA keyboard navigation, and modularize components.",
     aiFocus: "Implement automatic retry mechanisms with exponential backoff, rate limit handling, and token budget monitors.",
-    deliverable: "Tested, type-safe codebase with automated CI test suites."
+    deliverable: "Tested, type-safe codebase with automated CI test suites.",
   },
   {
     number: "06",
@@ -89,7 +79,7 @@ const PROCESS_STEPS: ProcessStep[] = [
     goal: "Eliminate any remaining friction, jank, or latency dead-zones.",
     frontendFocus: "Fine-tune hover states, fluid transitions, skeleton loaders, and micro-animations.",
     aiFocus: "Calibrate system prompts, tune chunk overlap, and optimize prompt token length.",
-    deliverable: "Silky-smooth 60 FPS user experience with sub-150ms perceived latency."
+    deliverable: "Silky-smooth 60 FPS user experience with sub-150ms perceived latency.",
   },
   {
     number: "07",
@@ -99,8 +89,8 @@ const PROCESS_STEPS: ProcessStep[] = [
     goal: "Launch to production with telemetry to measure real-world performance and user delight.",
     frontendFocus: "Setup real-user monitoring (RUM), Lighthouse audits, and client error tracking (Sentry).",
     aiFocus: "Track token economics, prompt drift, hallucination frequency, and user feedback signals (thumbs up/down).",
-    deliverable: "Production release with live monitoring dashboards and iteration backlog."
-  }
+    deliverable: "Production release with live monitoring dashboards and iteration backlog.",
+  },
 ];
 
 export function Process() {

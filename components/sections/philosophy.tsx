@@ -1,5 +1,3 @@
-"use client";
-
 import * as React from "react";
 import { Badge } from "@/components/ui/badge";
 
@@ -7,35 +5,36 @@ const PRINCIPLES = [
   {
     num: "01",
     title: "Build for the user",
-    desc: "AI is an amplifier for human capability, not an excuse to ignore ergonomic fundamentals. If the user feels alienated, the system fails."
+    desc: "AI is an amplifier for human capability, not an excuse to ignore ergonomic fundamentals. If the user feels alienated, the system fails.",
   },
   {
     num: "02",
     title: "Keep interfaces simple",
-    desc: "Complexity belongs in the background orchestration layer. The interface should feel calm, deterministic, and intuitive."
+    desc: "Complexity belongs in the background orchestration layer. The interface should feel calm, deterministic, and intuitive.",
   },
   {
     num: "03",
     title: "Use AI where it creates real value",
-    desc: "Never shoehorn an LLM where deterministic code or a standard UI component is faster, cheaper, and more reliable."
+    desc: "Never shoehorn an LLM where deterministic code or a standard UI component is faster, cheaper, and more reliable.",
   },
   {
     num: "04",
     title: "Prioritize performance",
-    desc: "Latency is the silent killer of AI adoption. 100ms perceptual response times transform skeptical users into delighted advocates."
+    desc: "Latency is the silent killer of AI adoption. 100ms perceptual response times transform skeptical users into delighted advocates.",
   },
   {
     num: "05",
     title: "Build reusable systems",
-    desc: "Invest in design tokens, type-safe API contracts, and modular tool registries. Great architecture scales without linear effort."
+    desc: "Invest in design tokens, type-safe API contracts, and modular tool registries. Great architecture scales without linear effort.",
   },
   {
     num: "06",
     title: "Ship and iterate",
-    desc: "True insight happens when real users collide with your software. Deploy early, observe telemetry rigorously, and polish relentlessly."
-  }
-];
+    desc: "True insight happens when real users collide with your software. Deploy early, observe telemetry rigorously, and polish relentlessly.",
+  },
+] as const;
 
+// Server Component: zero client JS shipped for this section
 export function Philosophy() {
   return (
     <section className="py-24 relative bg-[#08090a] border-t border-white/[0.06]">

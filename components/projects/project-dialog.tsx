@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Project } from "@/lib/projects";
+import type { Project } from "@/types";
 import {
   Dialog,
   DialogContent,
@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ExternalLink, CheckCircle2, AlertTriangle, Cpu, Layers } from "lucide-react";
+import { ExternalLink, CheckCircle2, AlertTriangle, Layers } from "lucide-react";
 import { Github } from "@/components/icons";
 
 interface ProjectDialogProps {
@@ -87,7 +87,7 @@ export function ProjectDialog({ project, open, onOpenChange }: ProjectDialogProp
             <div className="p-5 rounded-xl bg-[#111419] border border-white/[0.08]">
               <h4 className="text-xs font-mono uppercase tracking-wider text-white/[0.7] mb-3 flex items-center space-x-2">
                 <Layers className="h-4 w-4 text-[#00f5a0]" />
-                <span>System & Data Flow</span>
+                <span>System &amp; Data Flow</span>
               </h4>
               <div className="flex flex-wrap items-center gap-2">
                 {project.architectureFlow.map((step, idx) => (
@@ -134,7 +134,7 @@ export function ProjectDialog({ project, open, onOpenChange }: ProjectDialogProp
           <div className="p-5 rounded-xl bg-[#00f5a0]/[0.04] border border-[#00f5a0]/20">
             <h4 className="text-xs font-mono uppercase tracking-wider text-[#00f5a0] mb-3 flex items-center space-x-1.5">
               <CheckCircle2 className="h-4 w-4 text-[#00f5a0]" />
-              <span>Measurable Results & Outcomes</span>
+              <span>Measurable Results &amp; Outcomes</span>
             </h4>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {project.results.map((res, i) => (

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { Sparkles, Eye, Zap, Layers, Cpu, ShieldCheck, Box, ArrowDown, CheckCircle2 } from "lucide-react";
+import { Eye, Zap, Layers, Cpu, Box, Sparkles, CheckCircle2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 
@@ -23,7 +23,7 @@ const PILLARS: Pillar[] = [
     description:
       "AI models are probabilistic and inherently unpredictable. Great interfaces make them feel deterministic, trustworthy, and immediate.",
     howFrontendHelpsAI:
-      "Implementing speculative token rendering, skeleton states, and progressive disclosure for intermediate reasoning."
+      "Implementing speculative token rendering, skeleton states, and progressive disclosure for intermediate reasoning.",
   },
   {
     id: "integration",
@@ -33,7 +33,7 @@ const PILLARS: Pillar[] = [
     description:
       "Connecting foundation model APIs and vector databases into real application state machines without brittle glue code.",
     howFrontendHelpsAI:
-      "Strict JSON schema enforcement, bidirectional SSE stream parsing, and robust error recovery during model timeouts."
+      "Strict JSON schema enforcement, bidirectional SSE stream parsing, and robust error recovery during model timeouts.",
   },
   {
     id: "product",
@@ -43,7 +43,7 @@ const PILLARS: Pillar[] = [
     description:
       "Not every problem needs an LLM. Knowing when to use an algorithm, a deterministic UI element, or a generative model.",
     howFrontendHelpsAI:
-      "Designing interfaces that augment human decision-making rather than trapping users in infinite conversational loops."
+      "Designing interfaces that augment human decision-making rather than trapping users in infinite conversational loops.",
   },
   {
     id: "performance",
@@ -53,7 +53,7 @@ const PILLARS: Pillar[] = [
     description:
       "High-speed token streams (60+ tok/s) can cause heavy DOM thrashing if not managed with virtualized render cycles.",
     howFrontendHelpsAI:
-      "Leveraging Web Workers, offloading token diffing, and using requestAnimationFrame to maintain 60 FPS under load."
+      "Leveraging Web Workers, offloading token diffing, and using requestAnimationFrame to maintain 60 FPS under load.",
   },
   {
     id: "architecture",
@@ -63,7 +63,7 @@ const PILLARS: Pillar[] = [
     description:
       "Building modular, decoupled prompt templates, evaluation harnesses, and tool registries that scale across features.",
     howFrontendHelpsAI:
-      "Applying proven frontend design patterns (custom hooks, reactive state machines, atomic components) to AI pipelines."
+      "Applying proven frontend design patterns (custom hooks, reactive state machines, atomic components) to AI pipelines.",
   },
   {
     id: "scalability",
@@ -73,33 +73,33 @@ const PILLARS: Pillar[] = [
     description:
       "Ensuring AI components look and behave consistently with existing enterprise design systems and accessibility standards.",
     howFrontendHelpsAI:
-      "WCAG 2.1 AAA accessibility, keyboard-first navigation, fluid dark mode tokens, and responsive touch targets."
-  }
+      "WCAG 2.1 AAA accessibility, keyboard-first navigation, fluid dark mode tokens, and responsive touch targets.",
+  },
 ];
+
+const PROGRESSION = [
+  {
+    label: "3 YEARS",
+    title: "Frontend Engineering",
+    badge: "Foundational Craft",
+    desc: "Mastered React, Next.js, TypeScript, browser performance, design systems, and building high-polish user interfaces.",
+  },
+  {
+    label: "7 MONTHS",
+    title: "AI Engineering",
+    badge: "Emerging Frontier",
+    desc: "Immersed in LLM application architecture, RAG pipelines, autonomous agent workflows, prompt optimization, and vector stores.",
+  },
+  {
+    label: "NOW",
+    title: "Building AI-Powered Experiences",
+    badge: "The Multiplier",
+    desc: "Combining frontend precision with intelligent systems to create usable, delightful, production-ready AI products.",
+  },
+] as const;
 
 export function About() {
   const [activeStep, setActiveStep] = React.useState<number>(2);
-
-  const PROGRESSION = [
-    {
-      label: "3 YEARS",
-      title: "Frontend Engineering",
-      badge: "Foundational Craft",
-      desc: "Mastered React, Next.js, TypeScript, browser performance, design systems, and building high-polish user interfaces."
-    },
-    {
-      label: "7 MONTHS",
-      title: "AI Engineering",
-      badge: "Emerging Frontier",
-      desc: "Immersed in LLM application architecture, RAG pipelines, autonomous agent workflows, prompt optimization, and vector stores."
-    },
-    {
-      label: "NOW",
-      title: "Building AI-Powered Experiences",
-      badge: "The Multiplier",
-      desc: "Combining frontend precision with intelligent systems to create usable, delightful, production-ready AI products."
-    }
-  ];
 
   return (
     <section id="about" className="py-24 relative bg-[#08090a] border-t border-white/[0.06]">
@@ -125,8 +125,10 @@ export function About() {
               return (
                 <button
                   key={step.label}
+                  role="tab"
+                  aria-selected={isActive}
                   onClick={() => setActiveStep(idx)}
-                  className={`text-left p-6 rounded-2xl border transition-all duration-300 relative cursor-pointer ${
+                  className={`text-left p-6 rounded-2xl border transition-all duration-300 relative cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-[#00f5a0] ${
                     isActive
                       ? "bg-[#0e1116] border-[#00f5a0]/50 shadow-[0_0_30px_rgba(0,245,160,0.1)] -translate-y-1"
                       : "bg-[#0c0e11]/60 border-white/[0.08] hover:border-white/[0.2] hover:bg-[#0e1116]/80"

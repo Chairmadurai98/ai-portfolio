@@ -2,10 +2,16 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Menu, Sparkles, ArrowUpRight } from "lucide-react";
+import { Menu, ArrowUpRight } from "lucide-react";
 import { Github, Linkedin } from "@/components/icons";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 const NAV_LINKS = [
   { name: "Work", href: "#work" },
@@ -15,7 +21,7 @@ const NAV_LINKS = [
   { name: "Playground", href: "#playground" },
   { name: "How I Build", href: "#process" },
   { name: "Contact", href: "#contact" },
-];
+] as const;
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = React.useState(false);
@@ -68,8 +74,8 @@ export function Navbar() {
         <div className="hidden md:flex items-center space-x-2.5">
           <div className="flex items-center space-x-2 mr-2 px-3 py-1 rounded-full border border-white/[0.08] bg-white/[0.02]">
             <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00f5a0] opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00f5a0]"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00f5a0] opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00f5a0]" />
             </span>
             <span className="text-[11px] font-mono text-[#a1a1aa] tracking-tight">Available</span>
           </div>
@@ -146,8 +152,8 @@ export function Navbar() {
               <div className="pt-6 border-t border-white/[0.08] space-y-4">
                 <div className="flex items-center space-x-2">
                   <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00f5a0] opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00f5a0]"></span>
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#00f5a0] opacity-75" />
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00f5a0]" />
                   </span>
                   <span className="text-xs text-[#a1a1aa]">Open to interesting opportunities</span>
                 </div>

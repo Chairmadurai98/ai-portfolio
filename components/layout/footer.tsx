@@ -1,18 +1,17 @@
 "use client";
 
 import * as React from "react";
-import Link from "next/link";
 import { ArrowUp } from "lucide-react";
 import { Github, Linkedin } from "@/components/icons";
 
-export function Footer() {
+// Isolated lightweight clock component to prevent re-rendering the entire footer
+function LiveClock() {
   const [timeStr, setTimeStr] = React.useState<string>("");
 
   React.useEffect(() => {
     const updateTime = () => {
-      const now = new Date();
       setTimeStr(
-        now.toLocaleTimeString("en-US", {
+        new Date().toLocaleTimeString("en-US", {
           hour: "2-digit",
           minute: "2-digit",
           second: "2-digit",
@@ -25,6 +24,17 @@ export function Footer() {
     return () => clearInterval(interval);
   }, []);
 
+  if (!timeStr) return null;
+
+  return (
+    <>
+      <span>•</span>
+      <span>{timeStr}</span>
+    </>
+  );
+}
+
+export function Footer() {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -76,15 +86,10 @@ export function Footer() {
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-[11px] text-[#525866]">
           <div className="flex items-center space-x-2">
             <span className="relative flex h-2 w-2">
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00f5a0]"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#00f5a0]" />
             </span>
             <span>All systems nominal</span>
-            {timeStr && (
-              <>
-                <span>•</span>
-                <span>{timeStr}</span>
-              </>
-            )}
+            <LiveClock />
           </div>
 
           <div>

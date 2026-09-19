@@ -1,27 +1,4 @@
-export interface Project {
-  id: string;
-  title: string;
-  subtitle: string;
-  category: "AI" | "Frontend" | "Experiments";
-  tags: string[];
-  year: string;
-  featured?: boolean;
-  summary: string;
-  problem: string;
-  solution: string;
-  myContribution: string;
-  technicalChallenges: string[];
-  results: string[];
-  architectureFlow: string[];
-  codeSnippet?: {
-    language: string;
-    code: string;
-    caption: string;
-  };
-  githubUrl: string;
-  liveUrl: string;
-  accentColor: string;
-}
+import type { Project } from "@/types";
 
 export const PROJECTS: Project[] = [
   {
@@ -43,19 +20,19 @@ export const PROJECTS: Project[] = [
     technicalChallenges: [
       "Rendering 60+ tokens/second without triggering heavy React re-renders or DOM thrashing.",
       "Synchronizing multi-part tool execution outputs (structured JSON) with conversational text streams in a single viewport.",
-      "Handling abrupt WebSocket/SSE disconnections with automatic backoff reconnection and message state reconciliation."
+      "Handling abrupt WebSocket/SSE disconnections with automatic backoff reconnection and message state reconciliation.",
     ],
     results: [
       "Reduced perceived latency from 1.2s to under 180ms using optimistic UI states.",
       "Achieved stable 60 FPS rendering during high-speed token generation up to 95 tok/s.",
-      "40% reduction in user task abandonment during complex multi-step reasoning."
+      "40% reduction in user task abandonment during complex multi-step reasoning.",
     ],
     architectureFlow: [
       "User Input → Intent Classifier",
       "Speculative Prompt Pre-fetch",
       "SSE Token Streaming + Delta Buffer",
       "Client State Machine & Virtualized DOM",
-      "Interactive Result Render"
+      "Interactive Result Render",
     ],
     codeSnippet: {
       language: "typescript",
@@ -83,11 +60,11 @@ export const PROJECTS: Project[] = [
       }
     }
   }
-}`
+}`,
     },
     githubUrl: "https://github.com",
     liveUrl: "https://demo.example.com",
-    accentColor: "#00f5a0"
+    accentColor: "#00f5a0",
   },
   {
     id: "nexus-vector",
@@ -107,22 +84,22 @@ export const PROJECTS: Project[] = [
       "Architected the interactive dimensional reduction visualizer (t-SNE/UMAP projection viewer) and built the inspection drawer for token-level chunk overlap analysis.",
     technicalChallenges: [
       "Rendering 10,000+ vector points smoothly on HTML5 Canvas with fluid zooming, panning, and hit-testing.",
-      "Normalizing diverse distance metrics (Cosine, Euclidean, Dot Product) into an intuitive visual proximity model."
+      "Normalizing diverse distance metrics (Cosine, Euclidean, Dot Product) into an intuitive visual proximity model.",
     ],
     results: [
       "Cut RAG retrieval debugging cycle times by 65% for engineering teams.",
-      "Provided visual proof for chunk size optimization (256 vs 512 tokens) with instant context relevance checks."
+      "Provided visual proof for chunk size optimization (256 vs 512 tokens) with instant context relevance checks.",
     ],
     architectureFlow: [
       "Document Ingestion → Tokenizer Chunking",
       "Embedding Model (Dense & Sparse)",
       "Vector Index + Cosine Similarity",
       "Interactive 2D Canvas Projection",
-      "Ground Truth Relevance Audit"
+      "Ground Truth Relevance Audit",
     ],
     githubUrl: "https://github.com",
     liveUrl: "https://demo.example.com",
-    accentColor: "#0df2c8"
+    accentColor: "#0df2c8",
   },
   {
     id: "pulse-flow",
@@ -142,23 +119,23 @@ export const PROJECTS: Project[] = [
       "Lead frontend developer on core primitives (Data Tables, Modal Dialogs, Comboboxes) and automated Figma-to-Code token sync script via GitHub Actions.",
     technicalChallenges: [
       "Ensuring sub-millisecond component mount times and preventing style recalculation bottlenecks in massive data tables.",
-      "Achieving complete WCAG 2.1 AAA keyboard navigation and screen reader announcement parity."
+      "Achieving complete WCAG 2.1 AAA keyboard navigation and screen reader announcement parity.",
     ],
     results: [
       "Adopted by 45+ engineers across 4 business units with zero breaking changes.",
       "Boosted sprint feature velocity by ~35% by eliminating custom styling boilerplate.",
-      "100% Lighthouse Accessibility score across all core platform surfaces."
+      "100% Lighthouse Accessibility score across all core platform surfaces.",
     ],
     architectureFlow: [
       "Figma Tokens API → JSON Schema",
       "Style Dictionary Token Compilation",
       "Headless Radix Primitives + CVA",
       "Strict TypeScript Component Library",
-      "Automated Visual Regression CI"
+      "Automated Visual Regression CI",
     ],
     githubUrl: "https://github.com",
     liveUrl: "https://demo.example.com",
-    accentColor: "#38bdf8"
+    accentColor: "#38bdf8",
   },
   {
     id: "synapse-agent-studio",
@@ -178,21 +155,21 @@ export const PROJECTS: Project[] = [
       "Constructed the reactive canvas interface, execution timeline scrubber, and JSON-schema validator for agent tool outputs.",
     technicalChallenges: [
       "Maintaining bi-directional synchronization between the graph canvas and the underlying asynchronous agent execution engine.",
-      "Handling branching agent plans dynamically as models spawn sub-agents."
+      "Handling branching agent plans dynamically as models spawn sub-agents.",
     ],
     results: [
       "Enabled non-technical product managers to test and review agent toolchains visually.",
-      "Eliminated recurring agent infinite loops through visual cycle detection."
+      "Eliminated recurring agent infinite loops through visual cycle detection.",
     ],
     architectureFlow: [
       "Visual Node Graph Definition",
       "Agent Supervisor Planning Step",
       "Tool Invocation & Guardrail Check",
       "Human-in-the-Loop Intercept Option",
-      "Consolidated Final Synthesis"
+      "Consolidated Final Synthesis",
     ],
     githubUrl: "https://github.com",
     liveUrl: "https://demo.example.com",
-    accentColor: "#a855f7"
-  }
+    accentColor: "#a855f7",
+  },
 ];
